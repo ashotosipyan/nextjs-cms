@@ -1,18 +1,41 @@
 import Head from "next/head";
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
+import ResponsiveAppBar from "../components/header";
 
 export default function Home() {
+  const session = useSession();
+  console.log({ session });
   return (
-    <div className="container">
+    <div>
       <Head>
-        <title>Create Next Appasdasdasd</title>
+        <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <ResponsiveAppBar />
       <main>
+        {session.data ? (
+          <>
+            {`Hello ${session.data.user.name}`}
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                signOut();
+              }}
+            >
+              Log out
+            </a>
+          </>
+        ) : (
+          // <Link href="/api/auth/signin">Log In</Link>
+          <a onClick={() => signIn()}>Log</a>
+        )}
+        <h1 className="text-3xl font-bold underline">Hello world!</h1>
         <h1 className="title">
-          <Link href="/posts/first-post">Post</Link>
-          Welcome to <a href="https://nextjs.org">Next.js!asdasd</a>
+          <br />
+          <Link href="/posts/first-post">GO</Link>
+          Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
         <p className="description">
@@ -49,7 +72,6 @@ export default function Home() {
           </a>
         </div>
       </main>
-
       <footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -59,7 +81,6 @@ export default function Home() {
           Powered by <img src="/vercel.svg" alt="Vercel" className="logo" />
         </a>
       </footer>
-
       <style jsx>{`
         .container {
           min-height: 100vh;
@@ -190,7 +211,6 @@ export default function Home() {
           }
         }
       `}</style>
-
       <style jsx global>{`
         html,
         body {
